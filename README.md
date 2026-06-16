@@ -225,7 +225,7 @@ edge_analytics_ip/
 
 ## Authors
 
-> **SRINIDHI S** — B.E. Department of ECE 
+> **SRINIDHI S** &
 > **RESHMI S** — B.E. Department of ECE  
 > **Saveetha Engineering College**
 
