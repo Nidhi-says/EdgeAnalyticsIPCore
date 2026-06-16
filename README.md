@@ -205,8 +205,8 @@ edge_analytics_ip/
 ├── docs/
 │   ├── IP.png                # Block design
 │   ├── architecture.png      # Block diagram
-│   ├── spartan7.png          # Spartan-7 board implementation
-│   └── pynq_z2.png           # PYNQ-Z2 board implementation
+│   ├── spartan7.jpeg          # Spartan-7 board implementation
+│   └── pynq_z2.jpeg           # PYNQ-Z2 board implementation
 ├── README.md
 ```
 
