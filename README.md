@@ -187,11 +187,25 @@ edge_analytics_ip/
 │   ├── ea_decision.v         # Decision FSM
 │   └── ea_ml_fvec.v          # ML feature vector + DMA
 ├── sim/
-│   └── tb_ea_top.v           # Top-level testbench (Cadence)
+│   ├── tb_ea_top.v           # Top-level testbench (Cadence)
+│   └── nclaunch_sim/
+│       ├── sim1.png          #Simulation waveform 1
+│       ├── sim2.png          #Simulation waveform 2
+│       └── sim3.png          #Simulation waveform 3
+├── genus/
+|   ├── reports/
+│       ├── ea_top_area.rpt   #Post-synthesis gate count and resource 
+│       ├── ea_top_timing.rpt #Setup/hold slack reports (pre-layout)
+│       └── ea_top_power.rpt  #Dynamic and leakage power estimates
+|   └── netlist/
+│       └── ea_top_netlist.v  #Gate-level netlist exported from Genus synthesis
+├── innovus/
+|    └── implementation.png   #GDSII
 ├── constraints/
 │   ├── pynq_z2.xdc           # PYNQ-Z2 pin constraints
 │   └── spartan7.xdc          # Spartan-7 pin constraints
 ├── docs/
+│   ├── IP.png                # Block design
 │   └── architecture.png      # Block diagram
 ├── README.md
 ```
