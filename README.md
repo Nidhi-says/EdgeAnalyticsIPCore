@@ -140,10 +140,6 @@ The PYNQ-Z2 exposes 4 LEDs (`led0`–`led3`). Each LED is mapped to a pipeline b
 | `led2` | Anomaly flag | Steady ON — ramp signal exceeds threshold | ✅ Confirmed |
 | `led3` | FFT done | Dim — pulsing once per frame (~5–10% duty cycle) | ✅ Confirmed |
 
-📷 *PYNQ-Z2 board running the Edge Analytics IP — LEDs confirming MA Filter, Anomaly Detector, FFT, and IRQ outputs:*
-
-![PYNQ-Z2 Board](docs/pynq_z2.jpeg)
-
 ---
 
 ### Spartan-7 (RealDigital Boolean Board)
@@ -187,10 +183,6 @@ The full pipeline was verified on the **Spartan-7** board using 8 switches (`sw[
 | 5 | `led[4]` + `led[6]` | Decision made — system in CRITICAL state |
 | 6 | `led[5]` | Feature data ready for ML / DMA transfer |
 | 7 | `led[7]` | System-wide IRQ raised |
-
-📷 *Spartan-7 board running the full 7-stage Edge Analytics pipeline:*
-
-![Spartan-7 Board](docs/spartan7.jpeg)
 
 ---
 
@@ -262,7 +254,6 @@ edge_analytics_ip/
 | **HDL** | Verilog (synthesizable RTL, no vendor primitives) |
 | **Target Clock** | 100 MHz |
 | **AXI Interface** | AXI4-Stream (slave) + AXI4 (master, DMA) |
-| **Cross-platform** | RTL is portable across Xilinx 7-series (Zynq-7000, Spartan-7, Artix-7) |
 
 ---
 
@@ -274,7 +265,6 @@ edge_analytics_ip/
 - FFT engine correctly computes fundamental bin, DC magnitude, and spectral centroid
 - AXI4 DMA writer correctly bursts 16-word feature vector with proper WLAST handshaking
 - MA filter operates at full 100 MHz throughput with runtime reconfigurable window size
-- No board-specific primitives used — RTL is synthesizable across Zynq-7000, Spartan-7, and Artix-7
 
 ---
 
@@ -288,7 +278,3 @@ edge_analytics_ip/
 | RESHMI S | 212223060224 | Electronics & Communication Engineering |
 
 ---
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
