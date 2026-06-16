@@ -189,9 +189,9 @@ edge_analytics_ip/
 ├── sim/
 │   ├── tb_ea_top.v           # Top-level testbench (Cadence)
 │   └── nclaunch_sim/
-│       ├── sim1.png          #Simulation waveform 1
-│       ├── sim2.png          #Simulation waveform 2
-│       └── sim3.png          #Simulation waveform 3
+│       ├── sim1.jpeg          #Simulation waveform 1
+│       ├── sim2.jpeg          #Simulation waveform 2
+│       └── sim3.jpeg          #Simulation waveform 3
 ├── genus/
 |   ├── reports/
 │       ├── ea_top_area.rpt   #Post-synthesis gate count and resource 
