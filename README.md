@@ -189,24 +189,25 @@ edge_analytics_ip/
 ├── sim/
 │   ├── tb_ea_top.v           # Top-level testbench (Cadence)
 │   └── nclaunch_sim/
-│       ├── sim1.jpeg          #Simulation waveform 1
-│       ├── sim2.jpeg          #Simulation waveform 2
-│       └── sim3.jpeg          #Simulation waveform 3
+│       ├── sim1.jpeg         # Simulation waveform 1
+│       ├── sim2.jpeg         # Simulation waveform 2
+│       └── sim3.jpeg         # Simulation waveform 3
 ├── genus/
 |   ├── reports/
-│       ├── ea_top_area.rpt   #Post-synthesis gate count and resource 
-│       ├── ea_top_timing.rpt #Setup/hold slack reports (pre-layout)
-│       └── ea_top_power.rpt  #Dynamic and leakage power estimates
+│       ├── ea_top_area.rpt   # Post-synthesis gate count and resource 
+│       ├── ea_top_timing.rpt # Setup/hold slack reports (pre-layout)
+│       └── ea_top_power.rpt  # Dynamic and leakage power estimates
+|    └── synthesize.tcl       # Genus synthesis script — reads RTL, applies constraints, and exports netlist
 ├── innovus/
-|    └── implementation.png   #GDSII
+|    └── implementation.png   # GDSII
 ├── constraints/
 │   ├── pynq_z2.xdc           # PYNQ-Z2 pin constraints
 │   ├── spartan7.xdc          # Spartan-7 pin constraints
 ├── docs/
 │   ├── IP.png                # Block design
 │   ├── architecture.png      # Block diagram
-│   ├── spartan7.jpeg          # Spartan-7 board implementation
-│   └── pynq_z2.jpeg           # PYNQ-Z2 board implementation
+│   ├── spartan7.jpeg         # Spartan-7 board implementation
+│   └── pynq_z2.jpeg          # PYNQ-Z2 board implementation
 ├── README.md
 ```
 
