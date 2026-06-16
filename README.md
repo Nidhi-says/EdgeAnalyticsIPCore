@@ -221,6 +221,8 @@ edge_analytics_ip/
 | **Secondary FPGA Board** | Spartan-7 |
 | **Synthesis & Implementation** | Xilinx Vivado |
 | **Simulation** | Cadence NC-Launch (ncsim) |
+| **Synthesis** | Cadence Genus |
+| **GDSII** | Cadence Innovus |
 | **HDL** | Verilog (synthesizable RTL, no vendor primitives) |
 | **Target Clock** | 100 MHz |
 | **AXI Interface** | AXI4-Stream (slave) + AXI4 (master, DMA) |
