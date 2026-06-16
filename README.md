@@ -197,16 +197,16 @@ edge_analytics_ip/
 │       ├── ea_top_area.rpt   #Post-synthesis gate count and resource 
 │       ├── ea_top_timing.rpt #Setup/hold slack reports (pre-layout)
 │       └── ea_top_power.rpt  #Dynamic and leakage power estimates
-|   └── netlist/
-│       └── ea_top_netlist.v  #Gate-level netlist exported from Genus synthesis
 ├── innovus/
 |    └── implementation.png   #GDSII
 ├── constraints/
 │   ├── pynq_z2.xdc           # PYNQ-Z2 pin constraints
-│   └── spartan7.xdc          # Spartan-7 pin constraints
+│   ├── spartan7.xdc          # Spartan-7 pin constraints
 ├── docs/
 │   ├── IP.png                # Block design
-│   └── architecture.png      # Block diagram
+│   ├── architecture.png      # Block diagram
+│   ├── spartan7.png          # Spartan-7 board implementation
+│   └── pynq_z2.png           # PYNQ-Z2 board implementation
 ├── README.md
 ```
 
