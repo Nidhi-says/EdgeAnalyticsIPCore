@@ -1,6 +1,6 @@
 # FPGA-Based Edge Analytics IP Core
 
-> A fully synthesizable, AXI4-Stream-compatible Edge Analytics IP implemented and verified on both the **PYNQ-Z2** and **Spartan-7** FPGA platforms. Performs real-time signal processing, statistical feature extraction, FFT analysis, anomaly detection, and ML feature vector assembly — entirely in RTL.
+> A fully synthesizable, AXI4-Stream-compatible Edge Analytics IP implemented and verified on both the **PYNQ-Z2 (Zynq-7020)** and **RealDigital Boolean (Spartan-7)** FPGA platforms. Performs real-time signal processing, statistical feature extraction, FFT analysis, anomaly detection, and ML feature vector assembly — entirely in RTL.
 
 ---
 
@@ -129,32 +129,68 @@ Each stage asserts a `*_valid` handshake signal. The IRQ output is a registered 
 
 The IP was implemented and verified on two FPGA platforms.
 
-### PYNQ-Z2 
+### PYNQ-Z2 (Xilinx Zynq-7020)
 
-Verified via switch-controlled LED indicators with the full AXI4 DMA pipeline active:
+The PYNQ-Z2 exposes 4 LEDs (`led0`–`led3`). Each LED is mapped to a pipeline block status signal, and blocks were enabled incrementally to confirm correct operation.
 
-| Switch Config | Enabled Blocks | LED Behavior | Status |
+| LED | Mapped Signal | Behavior | Status |
 |---|---|---|---|
-| `sw[0]` only | MA Filter | LD0 steady | ✅ Confirmed |
-| `sw[0]+sw[1]` | + Feature Extractor | LD1+LD7 dim (12% duty cycle) | ✅ Confirmed |
-| `sw[0]+sw[1]+sw[2]`, sw[5]=0 | + Anomaly Detector | LD2 steady (ramp exceeds threshold) | ✅ Confirmed |
-| `sw[0]+sw[1]+sw[2]`, sw[5]=1 | Amplitude = 4000 | Same — anomaly already saturated | ✅ Confirmed |
-| + `sw[3]` | + FFT Engine | LD3 dim (~5–10% duty cycle) | ✅ Confirmed |
-| + `sw[4]` | Full pipeline | All LEDs active, LD6 steady (CRITICAL state) | ✅ Confirmed |
+| `led0` | MA Filter active | Steady ON — filter continuously processing samples | ✅ Confirmed |
+| `led1` | Feature extractor valid | Dim — pulsing once per window (low duty cycle) | ✅ Confirmed |
+| `led2` | Anomaly flag | Steady ON — ramp signal exceeds threshold | ✅ Confirmed |
+| `led3` | FFT done | Dim — pulsing once per frame (~5–10% duty cycle) | ✅ Confirmed |
+
+📷 *PYNQ-Z2 board running the Edge Analytics IP — LEDs confirming MA Filter, Anomaly Detector, FFT, and IRQ outputs:*
+
+![PYNQ-Z2 Board](docs/pynq_z2.jpeg)
+
+---
+
+### Spartan-7 (RealDigital Boolean Board)
+
+The full pipeline was verified on the **Spartan-7** board using 8 switches (`sw[0]`–`sw[7]`) to incrementally enable each block and 8 LEDs (`led[0]`–`led[7]`) to observe outputs in real time.
+
+#### Switch-to-Block Mapping
+
+| Switch | Block Enabled |
+|---|---|
+| `sw[0]` | MA Filter |
+| `sw[1]` | Feature Extractor |
+| `sw[2]` | Anomaly Detector |
+| `sw[3]` | FFT Engine |
+| `sw[4]` | Decision Engine + ML Feature Vector (full pipeline) |
+| `sw[5]` | Amplitude select: 0 = default, 1 = 4000 |
+
+#### LED Output — Full Pipeline (`sw[0]`–`sw[4]` all ON)
+
+| LED | Mapped Signal | Behavior | What It Means |
+|---|---|---|---|
+| `led[0]` | MA Filter active | **Steady** | Filter continuously reading samples at 100 MHz |
+| `led[1]` | Feature extractor valid | **Dim** (~12% duty cycle) | Extractor pulsing once every 8 samples |
+| `led[2]` | Anomaly flag | **Steady** | Ramp crossed threshold; hysteresis holds it latched ON |
+| `led[3]` | FFT done | **Dim** (~5–10% duty cycle) | FFT completing one frame periodically |
+| `led[4]` | Decision valid | **Dim** | FSM outputting `dec_valid` once per feature window |
+| `led[5]` | ML vector ready | **Dim** | DMA completing one 16-word burst per feature window |
+| `led[6]` | Decision state bit 0 | **Steady** | FSM in CRITICAL state (`dec_state = 2'b11`, bit 0 = 1) |
+| `led[7]` | IRQ | **Steady** | IRQ latched HIGH — `anom_flag` continuously asserted |
 
 **Decision FSM progression observed:** `NORMAL → WARNING → ALERT → CRITICAL` under sustained ramp anomaly.
 
-### Spartan-7 
+#### What Each LED Tells You
 
-The RTL was also synthesized and implemented on a **Xilinx Spartan-7** target to validate portability across Xilinx families. The design is fully synthesizable without any board-specific primitives — all DSP inferences (`use_dsp = "yes"`) and distributed RAM attributes (`ram_style = "distributed"`) are compatible with Spartan-7 fabric.
+| Step | LED(s) | What's Happening |
+|---|---|---|
+| 1 | `led[0]` | Reading sensor data continuously |
+| 2 | `led[1]` | Extracting features every few samples |
+| 3 | `led[2]` | Dangerous condition detected and held |
+| 4 | `led[3]` | Performing frequency analysis |
+| 5 | `led[4]` + `led[6]` | Decision made — system in CRITICAL state |
+| 6 | `led[5]` | Feature data ready for ML / DMA transfer |
+| 7 | `led[7]` | System-wide IRQ raised |
 
-| Aspect | Details |
-|---|---|
-| **Target Device** | Spartan-7 |
-| **Tool** | Xilinx Vivado |
-| **Constraints** | `constraints/spartan7.xdc` |
-| **AXI DMA** | Verified through simulation on Spartan-7 target |
-| **DSP Blocks** | DSP48E1 inferred for sine generation and amplitude scaling |
+📷 *Spartan-7 board running the full 7-stage Edge Analytics pipeline:*
+
+![Spartan-7 Board](docs/spartan7.jpeg)
 
 ---
 
@@ -217,8 +253,8 @@ edge_analytics_ip/
 
 | Tool / Platform | Details |
 |---|---|
-| **Primary FPGA Board** | PYNQ-Z2 |
-| **Secondary FPGA Board** | Spartan-7 |
+| **Primary FPGA Board** | PYNQ-Z2 (Xilinx Zynq-7020) |
+| **Secondary FPGA Board** | Spartan-7 (XC7S series) |
 | **Synthesis & Implementation** | Xilinx Vivado |
 | **Simulation** | Cadence NC-Launch (ncsim) |
 | **Synthesis** | Cadence Genus |
@@ -226,6 +262,7 @@ edge_analytics_ip/
 | **HDL** | Verilog (synthesizable RTL, no vendor primitives) |
 | **Target Clock** | 100 MHz |
 | **AXI Interface** | AXI4-Stream (slave) + AXI4 (master, DMA) |
+| **Cross-platform** | RTL is portable across Xilinx 7-series (Zynq-7000, Spartan-7, Artix-7) |
 
 ---
 
@@ -237,6 +274,7 @@ edge_analytics_ip/
 - FFT engine correctly computes fundamental bin, DC magnitude, and spectral centroid
 - AXI4 DMA writer correctly bursts 16-word feature vector with proper WLAST handshaking
 - MA filter operates at full 100 MHz throughput with runtime reconfigurable window size
+- No board-specific primitives used — RTL is synthesizable across Zynq-7000, Spartan-7, and Artix-7
 
 ---
 
@@ -244,9 +282,13 @@ edge_analytics_ip/
 
 > **Capstone Project** — *Saveetha Engineering College, 2026*
 
-| Name              | Roll No.        | Department                              |
-|-------------------|-----------------|-----------------------------------------|
-| SRINIDHI S        | 212223060272    | Electronics & Communication Engineering |
-| RESHMI S          | 212223060224    | Electronics & Communication Engineering |
+| Name | Roll No. | Department |
+|---|---|---|
+| SRINIDHI S | 212223060272 | Electronics & Communication Engineering |
+| RESHMI S | 212223060224 | Electronics & Communication Engineering |
+
 ---
 
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
