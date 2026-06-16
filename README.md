@@ -1,6 +1,6 @@
 # FPGA-Based Edge Analytics IP Core
 
-> A fully synthesizable, AXI4-Stream-compatible Edge Analytics IP implemented and verified on both the **PYNQ-Z2 (Zynq-7020)** and **Arty S7 (Spartan-7)** FPGA platforms. Performs real-time signal processing, statistical feature extraction, FFT analysis, anomaly detection, and ML feature vector assembly — entirely in RTL.
+> A fully synthesizable, AXI4-Stream-compatible Edge Analytics IP implemented and verified on both the **PYNQ-Z2** and **Spartan-7** FPGA platforms. Performs real-time signal processing, statistical feature extraction, FFT analysis, anomaly detection, and ML feature vector assembly — entirely in RTL.
 
 ---
 
@@ -129,7 +129,7 @@ Each stage asserts a `*_valid` handshake signal. The IRQ output is a registered 
 
 The IP was implemented and verified on two FPGA platforms.
 
-### PYNQ-Z2 (Xilinx Zynq-7020)
+### PYNQ-Z2 
 
 Verified via switch-controlled LED indicators with the full AXI4 DMA pipeline active:
 
@@ -144,13 +144,13 @@ Verified via switch-controlled LED indicators with the full AXI4 DMA pipeline ac
 
 **Decision FSM progression observed:** `NORMAL → WARNING → ALERT → CRITICAL` under sustained ramp anomaly.
 
-### Spartan-7 (Arty S7)
+### Spartan-7 
 
 The RTL was also synthesized and implemented on a **Xilinx Spartan-7** target to validate portability across Xilinx families. The design is fully synthesizable without any board-specific primitives — all DSP inferences (`use_dsp = "yes"`) and distributed RAM attributes (`ram_style = "distributed"`) are compatible with Spartan-7 fabric.
 
 | Aspect | Details |
 |---|---|
-| **Target Device** | Spartan-7 (XC7S series) |
+| **Target Device** | Spartan-7 |
 | **Tool** | Xilinx Vivado |
 | **Constraints** | `constraints/spartan7.xdc` |
 | **AXI DMA** | Verified through simulation on Spartan-7 target |
@@ -189,13 +189,11 @@ edge_analytics_ip/
 ├── sim/
 │   └── tb_ea_top.v           # Top-level testbench (Cadence)
 ├── constraints/
-│   ├── pynq_z2.xdc           # PYNQ-Z2 (Zynq-7020) pin constraints
+│   ├── pynq_z2.xdc           # PYNQ-Z2 pin constraints
 │   └── spartan7.xdc          # Spartan-7 pin constraints
 ├── docs/
 │   └── architecture.png      # Block diagram
 ├── README.md
-├── .gitignore
-└── LICENSE
 ```
 
 ---
@@ -204,14 +202,13 @@ edge_analytics_ip/
 
 | Tool / Platform | Details |
 |---|---|
-| **Primary FPGA Board** | PYNQ-Z2 (Xilinx Zynq-7020) |
-| **Secondary FPGA Board** | Spartan-7 (XC7S series) |
+| **Primary FPGA Board** | PYNQ-Z2 |
+| **Secondary FPGA Board** | Spartan-7 |
 | **Synthesis & Implementation** | Xilinx Vivado |
 | **Simulation** | Cadence NC-Launch (ncsim) |
 | **HDL** | Verilog (synthesizable RTL, no vendor primitives) |
 | **Target Clock** | 100 MHz |
 | **AXI Interface** | AXI4-Stream (slave) + AXI4 (master, DMA) |
-| **Cross-platform** | RTL is portable across Xilinx 7-series (Zynq-7000, Spartan-7, Artix-7) |
 
 ---
 
@@ -223,7 +220,6 @@ edge_analytics_ip/
 - FFT engine correctly computes fundamental bin, DC magnitude, and spectral centroid
 - AXI4 DMA writer correctly bursts 16-word feature vector with proper WLAST handshaking
 - MA filter operates at full 100 MHz throughput with runtime reconfigurable window size
-- No board-specific primitives used — RTL is synthesizable across Zynq-7000, Spartan-7, and Artix-7
 
 ---
 
