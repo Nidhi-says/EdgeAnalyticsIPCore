@@ -240,9 +240,11 @@ edge_analytics_ip/
 
 ## Authors
 
-> **SRINIDHI S** &
-> **RESHMI S** — B.E. Department of ECE  
-> **Saveetha Engineering College**
+> **Capstone Project** — *Saveetha Engineering College, 2026*
 
+| Name              | Roll No.        | Department                              |
+|-------------------|-----------------|-----------------------------------------|
+| SRINIDHI S        | 212223060272    | Electronics & Communication Engineering |
+| RESHMI S          | 212223060224    | Electronics & Communication Engineering |
 ---
 
